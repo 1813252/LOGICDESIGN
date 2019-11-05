@@ -42,7 +42,7 @@ assign       six_digit_seg = { seg_left, seg_right, seg_left, seg_right, seg_lef
 ![](https://github.com/1813252/LogicDesign/blob/master/practice06/waveform/prj06.png)
 
 ### **FPGA 동작 사진 (3개- 일반, Q1, Q2)**
-![]()
+![](https://github.com/1813252/LogicDesign/blob/master/practice06/FPGA/%EC%9D%BC%EB%B0%98.jpg)
 ![](https://github.com/1813252/LogicDesign/blob/master/practice06/FPGA/Q1.jpg)
 ![](https://github.com/1813252/LogicDesign/blob/master/practice06/FPGA/Q2.jpg)
 
