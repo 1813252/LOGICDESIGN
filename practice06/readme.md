@@ -142,78 +142,46 @@ endmodule
 
 ### FPGA 실습 (팀) : 6개의 LED 중 가장 오른쪽 2개의 LED에 1초간격으로 0~59까지 증가하는 Counter 값 Display
 : NCO(Numerical Controlled Oscillator) 입력 바꿔서 4초 간격으로 증가하는 코드 테스트
-module	top_nco_cnt_disp(	o_seg_enb,
-				o_seg_dp,
-				o_seg,
-				clk,
-				rst_n);
-
-output	[5:0]	o_seg_enb	;
-output			o_seg_dp	;
-output	[6:0]	o_seg		;
-
-
-input			clk			;
-input			rst_n		;
 
 
 
-wire [5:0] carry0;
-
-
-nco_cnt   u_nco_cnt (.o_nco_cnt(carry0),
-                     .i_nco_num(32'd50000000) ,
-                     .clk(clk),
-                     .rst_n(rst_n));
-                     
-
-
-wire [3:0] left;
-
-wire [3:0] right;
-
-
-double_fig_sep u_double_fig_sep (.i_double_fig(carry0),
-                                 .o_left(left),
-                                 .o_right(right));
-                              
-
-wire [6:0] left_1;
-wire [6:0] right_1;
-
-fnd_dec u0_fnd_dec ( .o_seg(left_1),
-                     .i_num(left));
-                  
-
-fnd_dec u1_fnd_dec ( .o_seg(right_1),
-                     .i_num(right));
-
-
-
+```verilog
 wire [41:0] carry;
 
 assign carry= { {4{7'b0000000}},left_1,right_1 };
-
-led_disp   u_led_disp (		              .o_seg(o_seg),
-				              .o_seg_dp(o_seg_dp),
-				              .o_seg_enb(o_seg_enb),
-				              .i_six_digit_seg(carry),
-				              .i_six_dp(6'd0),
-				              .clk(clk),
-				              .rst_n(rst_n));                     
+```
+               
                  
 endmodule
 
-## 퀴즈 ### 아래 코드 일부를 수정하여 다음을 구하시오 ```verilog wire  [41:0] six_digit_seg; assign       six_digit_seg = { 4{7'b0000000}, seg_left, seg_right } ``` 
->Q1 - 고정 LED (왼쪽 4개) AAAA 출력 : `AA_AA_00`, `AA_AA_01`, `AA_AA_02`, … 순으로 LED 변경
-`Please fill up your source`
-> Q2 - 고정 LED 없이 2개의 LED 단위로 1초 Counter 값 표시 : `00_00_00`, `01_01_01`, `02_02_02`, … 순으로 LED 변경
-`Please fill up your source`
-## 결과 ### **Top Module 의 DUT/TestBench Code 및 Waveform 검증**
-`Please fill up your source`
-### **FPGA 동작 사진 (3개- 일반, Q1, Q2)**
-`Please fill up your source`
+## 퀴즈 ### 아래 코드 일부를 수정하여 다음을 구하시오 
 
-<!--stackedit_data:
-eyJoaXN0b3J5IjpbLTE5MDQ3ODAyMzFdfQ==
--->
+```verilog 
+wire  [41:0] six_digit_seg; 
+assign       six_digit_seg = { 4{7'b0000000}, seg_left, seg_right } 
+``` 
+> Q1 - 고정 LED (왼쪽 4개) AAAA 출력 
+
+: `AA_AA_00`, `AA_AA_01`, `AA_AA_02`, … 순으로 LED 변경
+
+```verilog
+assign       six_digit_seg = { 4{7'b0000000}, seg_left, seg_right }
+```
+
+> Q2 - 고정 LED 없이 2개의 LED 단위로 1초 Counter 값 표시 
+
+: `00_00_00`, `01_01_01`, `02_02_02`, … 순으로 LED 변경
+
+```verilog
+assign       six_digit_seg = { 4{7'b0000000}, seg_left, seg_right }
+```
+## 결과 ### **Top Module 의 DUT/TestBench Code 및 Waveform 검증**
+
+![]()
+
+### **FPGA 동작 사진 (3개- 일반, Q1, Q2)**
+![]()
+![]()
+![]()
+
+
