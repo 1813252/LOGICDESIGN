@@ -340,12 +340,12 @@ always @(*) begin
 		MODE_SETUP : begin
 			case(o_position)
 				POS_SEC : begin
-					o_sec_clk = i_sw2;
+					o_sec_clk = ~sw2;
 					o_min_clk = 1'b0;
 				end
 				POS_MIN : begin
 					o_sec_clk = 1'b0;
-					o_min_clk = i_sw2;
+					o_min_clk = ~sw2;
 				end
 			endcase
 		end
