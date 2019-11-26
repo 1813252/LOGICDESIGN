@@ -11,6 +11,7 @@
 ### 결과   #**wave form 과 fpga 작동 사진**
 
 ![](https://github.com/1813252/LOGICDESIGN/blob/master/practice09/practice10_wave.png)
+![](https://github.com/1813252/LOGICDESIGN/blob/master/practice09/button8.jpg)
 <!--stackedit_data:
 eyJoaXN0b3J5IjpbLTgxMDc2NDY5NiwyNDMyNzE2NzRdfQ==
 -->
