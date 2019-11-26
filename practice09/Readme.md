@@ -13,13 +13,42 @@
 
 #### modelsim의 waveform
 ![](https://github.com/1813252/LOGICDESIGN/blob/master/practice09/practice10_wave.png)
-```verilog 
-parameter	IDLE		= 2'b00	 
-parameter	LEADCODE	= 2'b01	;	// 9ms high 4.5ms low
-parameter	DATACODE	= 2'b10	;	// Custom & Data Code
-parameter	COMPLETE	= 2'b11	;	// 32-bit data
-```
 
+:Sequentail Rx Bits
+```verilog 
+wire		ir_rx		;
+assign		ir_rx = ~i_ir_rxb; //신호가 반대로 들어오므로 
+
+reg	[1:0]	seq_rx				;
+always @(posedge clk_1M or negedge rst_n) begin
+	if(rst_n == 1'b0) begin
+		seq_rx <= 2'b00;
+	end else begin
+		seq_rx <= {seq_rx[0], ir_rx}; //{전상태,들어오는 신호}
+  end
+ end
+```
+:Count Signal Polarity (High&Low)
+
+```verilog
+reg	[15:0]	cnt_h		;
+reg	[15:0]	cnt_l		;
+always @(posedge clk_1M or negedge rst_n) begin
+	if(rst_n == 1'b0) begin
+		cnt_h <= 16'd0;
+		cnt_l <= 16'd0;
+	end else begin
+		case(seq_rx)
+			2'b00	: cnt_l <= cnt_l + 1;
+			2'b01	: begin
+				cnt_l <= 16'd0;
+				cnt_h <= 16'd0;
+			end
+			2'b11	: cnt_h <= cnt_h + 1;
+		endcase
+	end
+end
+```
 
 
 #### 8을 누를때 
