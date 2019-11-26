@@ -24,6 +24,8 @@ always @(posedge clk_1M or negedge rst_n) begin
  end
 ```
 :Count Signal Polarity (High&Low) 
+>low랑 high가 얼마동안 들어오는지 세는 모듈 
+
 ```verilog
 reg	[15:0]	cnt_h		;
 reg	[15:0]	cnt_l		;
