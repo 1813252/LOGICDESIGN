@@ -10,7 +10,10 @@
 
 ### 결과   #**wave form 과 fpga 작동 사진**
 
+#### modelsim의 waveform
 ![](https://github.com/1813252/LOGICDESIGN/blob/master/practice09/practice10_wave.png)
+
+#### 8을 누를때 
 ![](https://github.com/1813252/LOGICDESIGN/blob/master/practice09/button8.jpg)
 <!--stackedit_data:
 eyJoaXN0b3J5IjpbLTgxMDc2NDY5NiwyNDMyNzE2NzRdfQ==
