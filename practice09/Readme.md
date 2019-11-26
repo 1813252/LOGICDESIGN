@@ -59,15 +59,16 @@ always @(posedge clk_1M or negedge rst_n) begin
 				state <= LEADCODE; 
 				cnt32 <= 6'd0; 
 			end
-			LEADCODE: begin //leadcode구간
+			LEADCODE: begin //leadcode구간 '01'
 				if (cnt_h >= 8500 && cnt_l >= 4000) begin //high가 9ms 보다 길게 들어오고 low가 4.5ms 보다 짧게 들어올때
 					state <= DATACODE; //leadercode가 끝남 
 				end else begin
 					state <= LEADCODE; //그전까진 leadercode 
 				end
 			end
-			DATACODE: begin //datacode구간
-				if (seq_rx == 2'b01) begin 
+			DATACODE: begin //datacode구간 '10'
+				if (seq_rx == 2'b01) begin  //leadercode 끝나고 datacode 시작
+				
 					cnt32 <= cnt32 + 1;  //32bit들어오는지 셈 
 				end else begin
 					cnt32 <= cnt32; 
