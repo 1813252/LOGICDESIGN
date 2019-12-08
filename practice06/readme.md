@@ -49,106 +49,30 @@ assign       six_digit_seg = { seg_left, seg_right, seg_left, seg_right, seg_lef
 
 ```verilog 
 
-module 	hms_re_cnt (
-		o_hms_re_cnt,
-		o_min_re_hit,
-		clk,
-		rst_n);
+wire  [5:0]	timer_sec	;
+wire	[5:0]	timer_min	;
+wire	[5:0]	timer_hour	;
 
-output	[5:0]	o_hms_re_cnt		;
-output		o_min_re_hit		;
 
-input		clk			;
-input		rst_n			;
+hms_re_cnt 	u_hms_re_cnt_sec (
+		.o_hms_re_cnt	( timer_sec),
+		.o_min_re_hit	( o_min_hit_sec		),
+		
+		.clk		( i_timer_sec_clk	),
+		.rst_n		( rst_n			));
 
-reg	[5:0]	o_hms_re_cnt		;
-reg		o_min_re_hit		;
-always @(posedge clk or negedge rst_n) begin
-	if(rst_n == 1'b0) begin
-		o_hms_re_cnt <= 6'd0;
-		o_min_re_hit <= 1'b0;
-	end else begin
-		if(o_hms_re_cnt <= 0) begin
-			o_hms_re_cnt <= 6'd59;
-			o_min_re_hit <= 1'b1;
-		end else begin
-			o_hms_re_cnt <= o_hms_re_cnt - 1'b1;
-			o_min_re_hit <= 1'b0;
-		end
-	end
-end
+hms_re_cnt 	u_hms_re_cnt_min (
+		.o_hms_re_cnt	( timer_min),
+		.o_min_re_hit	( o_min_hit_min		),
+		
+		.clk		( i_timer_min_clk	),
+		.rst_n		( rst_n			));
 
-endmodule
-
-MODE_TIMER_SETUP : begin
-
-			if(o_timer_state ==1'b0) begin 
-
-			case(o_position)
-
-			POS_SEC : begin
-			o_sec_clk = clk_1hz;
-			o_min_clk = i_max_hit_sec;
-			o_hour_clk = i_max_hit_min;
-			o_alarm_sec_clk = 1'b0;
-			o_alarm_min_clk = 1'b0;
-			o_alarm_hour_clk = 1'b0;
-			o_stop_sec_clk	= 1'b0;
-			o_stop_min_clk	= 1'b0;
-			o_stop_hour_clk = 1'b0;
-			o_timer_hour_clk = 1'b0;
-			o_timer_min_clk =  1'b0;
-			o_timer_sec_clk =  ~sw2;
-			end
-			
-			POS_MIN : begin
-			o_sec_clk = clk_1hz;
-			o_min_clk = i_max_hit_sec;
-			o_hour_clk = i_max_hit_min;
-			o_alarm_sec_clk = 1'b0;
-			o_alarm_min_clk = 1'b0;
-			o_alarm_hour_clk = 1'b0;
-			o_stop_sec_clk	= 1'b0;
-			o_stop_min_clk	= 1'b0;
-			o_stop_hour_clk = 1'b0;
-			o_timer_hour_clk = 1'b0;
-			o_timer_min_clk =  ~sw2;
-			o_timer_sec_clk =  1'b0;
-			end
-
-			POS_HOUR : begin
-			o_sec_clk = clk_1hz;
-			o_min_clk = i_max_hit_sec;
-			o_hour_clk = i_max_hit_min;
-			o_alarm_sec_clk = 1'b0;
-			o_alarm_min_clk = 1'b0;
-			o_alarm_hour_clk = 1'b0;
-			o_stop_sec_clk	= 1'b0;
-			o_stop_min_clk	= 1'b0;
-			o_stop_hour_clk = 1'b0;
-			o_timer_hour_clk = ~sw2;
-			o_timer_min_clk =  1'b0;
-			o_timer_sec_clk =  1'b0;
-			end
-			endcase
-			end
-			
-			MODE_TIMER_COUNTDOWN : begin
-			
-			o_sec_clk = clk_1hz;
-			o_min_clk = i_max_hit_sec;
-			o_hour_clk = i_max_hit_min;
-			o_alarm_sec_clk = 1'b0;
-			o_alarm_min_clk = 1'b0;
-			o_alarm_hour_clk = 1'b0;
-			o_stop_sec_clk	= 1'b0;
-			o_stop_min_clk	= 1'b0;
-			o_stop_hour_clk = 1'b0;
-			o_timer_hour_clk = i_min_hit_min;
-			o_timer_min_clk =  i_min_hit_sec;
-			o_timer_sec_clk =  clk_1hz;
-			end
-	
-			end 
+hms_re_cnt 	u_hms_re_cnt_hour (
+		.o_hms_re_cnt	( timer_hour),
+		.o_min_re_hit	( o_min_hit_hour		),
+		
+		.clk		( i_timer_hour_clk	),
+		.rst_n		( rst_n			));
 
 
