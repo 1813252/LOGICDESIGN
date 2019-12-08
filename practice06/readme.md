@@ -47,32 +47,3 @@ assign       six_digit_seg = { seg_left, seg_right, seg_left, seg_right, seg_lef
 ![](https://github.com/1813252/LogicDesign/blob/master/practice06/FPGA/Q2.jpg)
 
 
-```verilog 
-
-wire  [5:0]	timer_sec	;
-wire	[5:0]	timer_min	;
-wire	[5:0]	timer_hour	;
-
-
-hms_re_cnt 	u_hms_re_cnt_sec (
-		.o_hms_re_cnt	( timer_sec),
-		.o_min_re_hit	( o_min_hit_sec		),
-		
-		.clk		( i_timer_sec_clk	),
-		.rst_n		( rst_n			));
-
-hms_re_cnt 	u_hms_re_cnt_min (
-		.o_hms_re_cnt	( timer_min),
-		.o_min_re_hit	( o_min_hit_min		),
-		
-		.clk		( i_timer_min_clk	),
-		.rst_n		( rst_n			));
-
-hms_re_cnt 	u_hms_re_cnt_hour (
-		.o_hms_re_cnt	( timer_hour),
-		.o_min_re_hit	( o_min_hit_hour		),
-		
-		.clk		( i_timer_hour_clk	),
-		.rst_n		( rst_n			));
-
-
