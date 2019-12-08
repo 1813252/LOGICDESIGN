@@ -48,14 +48,53 @@ assign       six_digit_seg = { seg_left, seg_right, seg_left, seg_right, seg_lef
 
 
 ```verilog 
-wire 	[5:0]	stop_sec	;
-wire 	[5:0]	stop_min	;
+input		i_max_hit_sec		;
+input		i_max_hit_min		;
+input		i_max_hit_hour		;
+
+MODE_STOPWATCH : begin
+			case(o_state)
+				
+			COUNT_UP : begin //count_up 
+			o_sec_clk = 1'b0;
+			o_min_clk = 1'b0;
+			o_hour_clk= 1'b0;
+			o_alarm_sec_clk = 1'b0;
+			o_alarm_min_clk = 1'b0;
+			o_alarm_hour_clk = 1'b0;
+			o_stop_sec_clk	=  clk_1hz;
+			o_stop_min_clk	=  i_max_hit_sec_stop;
+			o_stop_hour_clk =  i_max_hit_min_stop;
+			o_timer_sec_clk = 1'b0;
+			o_timer_min_clk = 1'b0;
+			o_timer_hour_clk= 1'b0;
+			end
+			
+			STOP : begin //stop
+			o_sec_clk = 1'b0;
+			o_min_clk = 1'b0;
+			o_hour_clk = 1'b0;
+			o_alarm_sec_clk = 1'b0;
+			o_alarm_min_clk = 1'b0;
+			o_alarm_hour_clk = 1'b0;
+			o_stop_sec_clk	= 1'b0;
+			o_stop_min_clk	= 1'b0;
+			o_stop_hour_clk = 1'b0;
+			o_timer_sec_clk = 1'b0;
+			o_timer_min_clk = 1'b0;
+			o_timer_hour_clk= 1'b0;
+			end
+
+		    endcase
+	end
+	
+	wire 	[5:0]	stop_min	;
 wire 	[5:0]	stop_hour	;
 wire	stop_rst_n	;
 
 hms_cnt		u_hms_cnt_stop_sec (
 		.o_hms_cnt	( stop_sec		),
-		.o_max_hit	( max_hit_sec		),
+		.o_max_hit	( o_max_hit_sec_stop	),
 		.i_max_cnt	( 6'd59			),
 		.clk		( i_stop_sec_clk	),
 		.rst_n		( stop_rst_n		));
@@ -64,16 +103,17 @@ hms_cnt		u_hms_cnt_stop_sec (
 
 hms_cnt		u_hms_cnt_stop_min (
 		.o_hms_cnt	( stop_min		),
-		.o_max_hit	( max_hit_min		),
+		.o_max_hit	( o_max_hit_min_stop),
 		.i_max_cnt	( 6'd59			),
 		.clk		( i_stop_min_clk	),
-		.rst_n		( stop_rst_n		));
+		.rst_n		( stop_rst_n			));
 
 
 
 hms_cnt		u_hms_cnt_stop_hour (
 		.o_hms_cnt	( stop_hour		),
-		.o_max_hit	( max_hit_hour	),
+		.o_max_hit	( o_max_hit_hour_stop),
 		.i_max_cnt	( 6'd23			),
 		.clk		( i_stop_hour_clk	),
 		.rst_n		( stop_rst_n		));
+		
