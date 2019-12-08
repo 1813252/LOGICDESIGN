@@ -47,4 +47,72 @@ assign       six_digit_seg = { seg_left, seg_right, seg_left, seg_right, seg_lef
 ![](https://github.com/1813252/LogicDesign/blob/master/practice06/FPGA/Q2.jpg)
 
 
+```verilog 
+module controller 
+output 		o_stop_sec_clk		;
+output		o_stop_min_clk		;
+output		o_stop_hour_clk		;
+
+
+always @(posedge sw4 or negedge rst_n) begin
+	if(rst_n==1'b0) begin 
+	o_state <= STOP;
+
+	end else begin //rst_n==1'b1
+	o_state <= ~o_state;
+
+	end
+	end 
+
+always @(posedge sw5 or negedge rst_n) begin
+	
+	if(rst_n ==1'b0) begin
+	stop_rst_n <= 1'b1;
+
+	end else begin 
+	stop_rst_n <= ~stop_rst_n;
+  
+end 
+end 
+
+MODE_STOPWATCH : begin
+			case(o_state)
+				
+			COUNT_UP : begin //count_up 
+			o_sec_clk = clk_1hz;
+			o_min_clk = i_max_hit_sec;
+			o_hour_clk= i_max_hit_min;
+			o_alarm_sec_clk = 1'b0;
+			o_alarm_min_clk = 1'b0;
+			o_alarm_hour_clk = 1'b0;
+			o_stop_sec_clk	=  clk_1hz;
+			o_stop_min_clk	=  i_max_hit_sec;
+			o_stop_hour_clk =  i_max_hit_min;
+			o_timer_sec_clk = 1'b0;
+			o_timer_min_clk = 1'b0;
+			o_timer_hour_clk= 1'b0;
+			end
+			
+			STOP : begin //stop
+			o_sec_clk = clk_1hz;
+			o_min_clk = i_max_hit_sec;
+			o_hour_clk = i_max_hit_min;
+			o_alarm_sec_clk = 1'b0;
+			o_alarm_min_clk = 1'b0;
+			o_alarm_hour_clk = 1'b0;
+			o_stop_sec_clk	= 1'b0;
+			o_stop_min_clk	= 1'b0;
+			o_stop_hour_clk = 1'b0;
+			o_timer_sec_clk = 1'b0;
+			o_timer_min_clk = 1'b0;
+			o_timer_hour_clk= 1'b0;
+			end
+			endcase
+	end
+
+
+
+
+
+
 
