@@ -48,72 +48,26 @@ assign       six_digit_seg = { seg_left, seg_right, seg_left, seg_right, seg_lef
 
 
 ```verilog 
-input		i_max_hit_sec		;
-input		i_max_hit_min		;
-input		i_max_hit_hour		;
 
-MODE_STOPWATCH : begin
-			case(o_state)
-				
-			COUNT_UP : begin //count_up 
-			o_sec_clk = 1'b0;
-			o_min_clk = 1'b0;
-			o_hour_clk= 1'b0;
-			o_alarm_sec_clk = 1'b0;
-			o_alarm_min_clk = 1'b0;
-			o_alarm_hour_clk = 1'b0;
-			o_stop_sec_clk	=  clk_1hz;
-			o_stop_min_clk	=  i_max_hit_sec_stop;
-			o_stop_hour_clk =  i_max_hit_min_stop;
-			o_timer_sec_clk = 1'b0;
-			o_timer_min_clk = 1'b0;
-			o_timer_hour_clk= 1'b0;
-			end
-			
-			STOP : begin //stop
-			o_sec_clk = 1'b0;
-			o_min_clk = 1'b0;
-			o_hour_clk = 1'b0;
-			o_alarm_sec_clk = 1'b0;
-			o_alarm_min_clk = 1'b0;
-			o_alarm_hour_clk = 1'b0;
-			o_stop_sec_clk	= 1'b0;
-			o_stop_min_clk	= 1'b0;
-			o_stop_hour_clk = 1'b0;
-			o_timer_sec_clk = 1'b0;
-			o_timer_min_clk = 1'b0;
-			o_timer_hour_clk= 1'b0;
-			end
+parameter	MODE_CLOCK	= 6'b0101_00	;
+parameter	MODE_SETUP	= 6'b0101_01	;
+parameter	MODE_ALARM	= 6'b0101_10	;
+parameter	MODE_STOPWATCH	= 6'b0101_11	;
+parameter	MODE_TIMER_SETUP	= 6'b0110_00	;
+parameter	MODE_TIMER_COUNTDOWN 	= 6'b0110_01	;
 
-		    endcase
-	end
+
+parameter	STOP		= 1'b0	;
+parameter 	COUNT_UP	= 1'b1	;
 	
-	wire 	[5:0]	stop_min	;
-wire 	[5:0]	stop_hour	;
-wire	stop_rst_n	;
-
-hms_cnt		u_hms_cnt_stop_sec (
-		.o_hms_cnt	( stop_sec		),
-		.o_max_hit	( o_max_hit_sec_stop	),
-		.i_max_cnt	( 6'd59			),
-		.clk		( i_stop_sec_clk	),
-		.rst_n		( stop_rst_n		));
-
-
-
-hms_cnt		u_hms_cnt_stop_min (
-		.o_hms_cnt	( stop_min		),
-		.o_max_hit	( o_max_hit_min_stop),
-		.i_max_cnt	( 6'd59			),
-		.clk		( i_stop_min_clk	),
-		.rst_n		( stop_rst_n			));
-
-
-
-hms_cnt		u_hms_cnt_stop_hour (
-		.o_hms_cnt	( stop_hour		),
-		.o_max_hit	( o_max_hit_hour_stop),
-		.i_max_cnt	( 6'd23			),
-		.clk		( i_stop_hour_clk	),
-		.rst_n		( stop_rst_n		));
-		
+always @(posedge sw0 or negedge rst_n) begin
+	if(rst_n == 1'b0) begin
+		o_mode <= MODE_CLOCK;
+	end else begin
+		if(o_mode >= MODE_TIMER_COUNTDOWN) begin
+			o_mode <= MODE_CLOCK;
+		end else begin
+			o_mode <= o_mode + 1'b1;
+		end
+	end
+end
